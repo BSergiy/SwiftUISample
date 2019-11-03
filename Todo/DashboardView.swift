@@ -17,14 +17,26 @@ struct DashboardView: View {
                 List{
                     ForEach(todoList.list, id: \.id){ task in
                         NavigationLink(destination: TaskView(task: task, id: task.id).environmentObject(self.todoList)){
-                            Text(task.name)
+                            VStack(alignment: .leading){
+                                Text(task.name)
+                                    .font(.title)
+                                if (!task.description.isEmpty){
+                                    Text(task.description)
+                                        .font(.body)
+                                        .foregroundColor(.gray)
+                                }
+                            }
                         }
-                    }.onDelete(perform: deleteItems)
+                    }
+                        .onDelete(perform: deleteItems)
+                        .frame(minHeight: 70)
                 }
+                .navigationBarTitle("Список задач", displayMode: .inline)
                 HStack{
                     Spacer()
                     NavigationLink(destination: TaskView(task: Task()).environmentObject(todoList)){
-                        Text("Создать")
+                        Image(systemName: "plus.circle.fill")
+                            .imageScale(.large)
                     }
                 }.padding()
             }
