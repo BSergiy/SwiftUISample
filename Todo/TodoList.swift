@@ -8,9 +8,6 @@
 
 import Foundation
 
-fileprivate let appDirectoryName = "todo"
-fileprivate let fileName = "tasks.json"
-
 class TodoList: ObservableObject{
     @Published var list = [Task]()
     
@@ -35,7 +32,36 @@ class TodoList: ObservableObject{
     }
     
     private func loadTasks() -> [Task] {
+        do{
+            let data = try Data(contentsOf: todoFile)
+            
+            let decoder = JSONDecoder()
+            return try decoder.decode([Task].self, from: data)
+        }
+        catch{
+            print(error)
+        }
+        return [Task]()
+    }
+    
+    private func saveTasks(tasks: [Task]){
         let fm = FileManager.default
+        
+        do{
+            let encoder = JSONEncoder()
+            let data = try encoder.encode(tasks)
+            print(fm.createFile(atPath: todoFile.path, contents: data))
+        }
+        catch{
+            print(error)
+        }
+    }
+    
+    private var todoFile: URL {
+        let fm = FileManager.default
+        
+        let appDirectoryName = "todo"
+        let fileName = "tasks.json"
         
         do{
             let userDocuments = try fm.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
@@ -52,36 +78,11 @@ class TodoList: ObservableObject{
                 print(fm.createFile(atPath: file.path, contents: data))
             }
             
-            if (fm.fileExists(atPath: file.path)){
-                let data = try Data(contentsOf: file)
-                
-                let decoder = JSONDecoder()
-                return try decoder.decode([Task].self, from: data)
-            }
-            
-            return [Task]()
+            return file
         }
         catch{
-            return [Task]()
+            fatalError("Что-то пошло не так...")
         }
-    }
-    
-    private func saveTasks(tasks: [Task]){
-        let fm = FileManager.default
-        
-        do{
-            let userDocuments = try fm.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-            let appDirectory = userDocuments.appendingPathComponent(appDirectoryName)
-            let file = appDirectory.appendingPathComponent(fileName)
-            
-            let encoder = JSONEncoder()
-            let data = try encoder.encode(tasks)
-            print(fm.createFile(atPath: file.path, contents: data))
-        }
-        catch{
-            
-        }
-        
     }
 
 }
