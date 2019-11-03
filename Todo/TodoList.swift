@@ -38,7 +38,7 @@ class TodoList: ObservableObject{
         let fm = FileManager.default
         
         do{
-            let userDocuments = try fm.url(for: .demoApplicationDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+            let userDocuments = try fm.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
             let appDirectory = userDocuments.appendingPathComponent(appDirectoryName)
             if (!fm.fileExists(atPath: appDirectory.path)){
                 try fm.createDirectory(at: appDirectory, withIntermediateDirectories: true)
@@ -70,7 +70,7 @@ class TodoList: ObservableObject{
         let fm = FileManager.default
         
         do{
-            let userDocuments = try fm.url(for: .demoApplicationDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+            let userDocuments = try fm.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
             let appDirectory = userDocuments.appendingPathComponent(appDirectoryName)
             let file = appDirectory.appendingPathComponent(fileName)
             
