@@ -19,7 +19,7 @@ struct DashboardView: View {
                         NavigationLink(destination: TaskView(task: task, id: task.id).environmentObject(self.todoList)){
                             Text(task.name)
                         }
-                    }
+                    }.onDelete(perform: deleteItems)
                 }
                 HStack{
                     Spacer()
@@ -28,7 +28,12 @@ struct DashboardView: View {
                     }
                 }.padding()
             }
-        }
+        }.navigationBarItems(trailing: EditButton())
+    }
+    
+    func deleteItems(at offsets: IndexSet) {
+        todoList.list.remove(atOffsets: offsets)
+        todoList.saveToUserFolder()
     }
 }
 

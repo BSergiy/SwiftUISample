@@ -14,8 +14,8 @@ struct MainView: View {
     var body: some View {
         ZStack{
             DashboardView()
-                .environmentObject(g_list)
-                .gesture(DragGesture(minimumDistance: 10)
+                .environmentObject(g_todoList)
+                .gesture(DragGesture(minimumDistance: 100)
                     .onEnded{_ in self.openMenu()})
     
             SideMenuView(width: 270,

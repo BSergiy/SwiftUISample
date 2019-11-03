@@ -8,13 +8,13 @@
 
 import Foundation
 
-enum Priority{
-    case high
-    case normal
-    case low
+enum Priority: String, CaseIterable, Codable, Hashable{
+    case high = "high"
+    case normal = "normal"
+    case low = "low"
 }
 
-struct Task{
+struct Task: Hashable, Codable, Identifiable{
     let id = UUID()
     var name = ""
     var description = ""

@@ -48,11 +48,13 @@ struct TaskView: View {
         }
         
         self.todoList.list[index] = self.task
+        self.todoList.saveToUserFolder()
         self.presentationMode.wrappedValue.dismiss()
     }
     
     func createNewTask(){
         self.todoList.list.append(self.task)
+        self.todoList.saveToUserFolder()
         self.presentationMode.wrappedValue.dismiss()
     }
 }
