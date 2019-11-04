@@ -8,14 +8,51 @@
 
 import SwiftUI
 
+fileprivate enum SortigType: String, CaseIterable, Hashable{
+    case byCreated = "дате создания"
+    case byPriority = "приоритету"
+    case byExpiration = "дате экспирации"
+}
+
+fileprivate enum SortDirection: Int, CaseIterable, Hashable{
+    case ascending = 0
+    case descending = 1
+}
+
 struct DashboardView: View {
     @EnvironmentObject var todoList: TodoList
+    
+    @State private var showSettings = false
+    @State private var sortingType: SortigType = .byCreated
+    @State private var sortDirection: SortDirection = .ascending
 
     var body: some View {
         NavigationView{
             VStack{
+                HStack{
+                    Spacer()
+                    
+                    Button(action: changeSortDirection){
+                        Image(systemName: sortDirection == .ascending ?
+                            "arrow.up" : "arrow.down")
+                    }
+                    
+                    Divider().frame(maxHeight: 15)
+                    
+                    Button(action: { self.showSettings.toggle() }){
+                        Image(systemName: "slider.horizontal.3")
+                    }
+                }
+                    .padding()
+                
+                if (showSettings){
+                    dashboardSettings
+                }
+
+                Divider()
+                
                 List{
-                    ForEach(todoList.list){ task in
+                    ForEach(todoList.list.sorted(by: sortTasks)){ task in
                         self.makeTaskRow(task)
                     }
                         .onDelete(perform: deleteItems)
@@ -34,6 +71,46 @@ struct DashboardView: View {
             }.navigationBarTitle("Список задач",
                                  displayMode: .inline)
         }.navigationBarItems(trailing: EditButton())
+    }
+    
+    private func sortTasks(t1: Task, t2: Task) -> Bool {
+        switch sortingType {
+        case .byCreated:
+            return compare(t1.created, t2.created)
+            
+        case.byPriority:
+            return compare(t1.priority, t2.priority)
+        
+        case .byExpiration:
+            return compare(t1.expiration, t2.expiration)
+        }
+    }
+    
+    private func compare<T: Comparable>(_ t1: T, _ t2: T) -> Bool{
+        if (sortDirection == .ascending){
+            return t1 > t2
+        }
+        
+        return t1 < t2
+    }
+    
+    private var dashboardSettings: some View{
+        VStack{
+            Text("Сортировать по:")
+            Picker(
+                selection: $sortingType,
+                label: Text("")
+            ){
+                ForEach(SortigType.allCases, id: \.self){
+                    Text($0.rawValue).tag($0)
+                }
+            }
+                .pickerStyle(SegmentedPickerStyle())
+        }
+    }
+    
+    private func changeSortDirection(){
+        sortDirection = sortDirection == .ascending ? .descending : .ascending
     }
     
     private func deleteItems(at offsets: IndexSet) {
@@ -61,6 +138,8 @@ struct DashboardView: View {
                         .foregroundColor(.gray)
                         .font(.subheadline)
                 }
+                
+                Divider()
                 
                 VStack(alignment: .leading){
                     Text(task.name)

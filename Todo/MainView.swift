@@ -18,9 +18,9 @@ struct MainView: View {
                 .gesture(DragGesture(minimumDistance: 100)
                     .onEnded{_ in self.openMenu()})
     
-            SideMenuView(width: 270,
-            isOpen: self.menuOpen,
-            menuClose: self.openMenu)
+//            SideMenuView(width: 270,
+//                         isOpen: self.menuOpen,
+//                         menuClose: self.openMenu)
         }
     }
     
