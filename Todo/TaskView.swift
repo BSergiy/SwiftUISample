@@ -13,6 +13,8 @@ struct TaskView: View {
     var id: UUID? = nil
     @EnvironmentObject var todoList: TodoList
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
+    private var yearInSeconds: Double { 365.0 * 24.0 * 60.0 * 60.0 }
 
     var body: some View {
         VStack{
@@ -38,6 +40,17 @@ struct TaskView: View {
                     }
                 }
                     .pickerStyle(SegmentedPickerStyle())
+            }.padding()
+
+            VStack(alignment: .leading){
+                Text("Дата экспирации:")
+                DatePicker(
+                    selection: $task.expiration,
+                    in: Date()...Date().addingTimeInterval(yearInSeconds),
+                    displayedComponents: .date
+                ){
+                    Text("")
+                }
             }.padding()
 
             Divider()

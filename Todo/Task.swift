@@ -19,5 +19,6 @@ struct Task: Hashable, Codable, Identifiable{
     var name = ""
     var description = ""
     var priority: Priority = .normal
-    var date: Date? = nil
+    var expiration = Date()
+    let created = Date()
 }

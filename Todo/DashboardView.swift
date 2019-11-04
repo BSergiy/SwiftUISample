@@ -54,7 +54,13 @@ struct DashboardView: View {
     private func makeTaskRow(_ task: Task) -> some View{
         NavigationLink(destination: makeTaskView(task, withId: true)){
             HStack{
-                makePriorityTagView(task.priority)
+                VStack{
+                    makePriorityTagView(task.priority)
+
+                    Text("\(task.expiration, formatter: dateFormatter)")
+                        .foregroundColor(.gray)
+                        .font(.subheadline)
+                }
                 
                 VStack(alignment: .leading){
                     Text(task.name)
@@ -84,6 +90,12 @@ struct DashboardView: View {
         case .high:
             return drawCircle().foregroundColor(.red)
         }
+    }
+    
+    private var dateFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        return formatter
     }
 }
 
