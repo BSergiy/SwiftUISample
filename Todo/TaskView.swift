@@ -15,51 +15,73 @@ struct TaskView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     private var yearInSeconds: Double { 365.0 * 24.0 * 60.0 * 60.0 }
+    
+    private var dateFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        return formatter
+    }
 
     var body: some View {
-        VStack{
-            HStack{
-                Text("Название:")
-                TextField("", text: $task.name)
-            }.padding()
+        ScrollView{
+            VStack{
+                HStack{
+                    Text("Название:")
+                    TextField("", text: $task.name)
+                        .background(Color(UIColor(white: 0.0, alpha: 0.05)))
+                }.padding([Edge.Set.horizontal, Edge.Set.top])
 
-            HStack{
-                Text("Описание:")
-                TextField("", text: $task.description)
-            }.padding()
+                VStack(alignment: .leading){
+                    Text("Описание:")
+                    TextView(text: $task.description)
+                        .frame(
+                            minWidth: 10,
+                            maxWidth: .infinity,
+                            minHeight: 80,
+                            maxHeight: .infinity
+                        )
+                }.padding(Edge.Set.horizontal)
 
-            VStack(alignment: .leading){
-                Text("Приоритет:")
-                Picker(
-                    selection: $task.priority,
-                    label: Text("Приоритет:")
-                ){
-                    ForEach(Priority.allCases, id: \.self) {
-                        self.makePriorityImage($0)
-                            .tag($0)
+                VStack(alignment: .leading){
+                    Text("Приоритет:")
+                    Picker(
+                        selection: $task.priority,
+                        label: Text("Приоритет:")
+                    ){
+                        ForEach(Priority.allCases, id: \.self) {
+                            self.makePriorityImage($0)
+                                .tag($0)
+                        }
                     }
-                }
-                    .pickerStyle(SegmentedPickerStyle())
-            }.padding()
+                        .pickerStyle(SegmentedPickerStyle())
+                }.padding(Edge.Set.horizontal)
 
-            VStack(alignment: .leading){
-                Text("Дата экспирации:")
-                DatePicker(
-                    selection: $task.expiration,
-                    in: Date()...Date().addingTimeInterval(yearInSeconds),
-                    displayedComponents: .date
-                ){
-                    Text("")
+                HStack{
+                    Text("Выбор даты экспирации:")
+                    NavigationLink(
+                        destination: makeExpirationDatePicker(from: task.created)
+                    ){
+                        Text("\(task.expiration, formatter: dateFormatter)")
+                    }.padding()
                 }
-            }.padding()
 
-            Divider()
-            
-            makeDoneButton().padding()
-            
-            Spacer()
+                Divider()
+                
+                makeDoneButton().padding(Edge.Set.horizontal)
+                
+                Spacer()
+            }
         }
-            .padding()
+    }
+    
+    private func makeExpirationDatePicker(from date: Date) -> some View{
+        DatePicker(
+            selection: $task.expiration,
+            in: date...Date().addingTimeInterval(yearInSeconds),
+            displayedComponents: .date
+        ){
+            Text("")
+        }.navigationBarTitle("Выбор даты экспирации")
     }
     
     func makePriorityImage(_ priority: Priority) -> Image {

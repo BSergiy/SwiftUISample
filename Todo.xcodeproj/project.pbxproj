@@ -22,6 +22,7 @@
 		AD8B4F9823634EFF004AEC0E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD8B4F9723634EFF004AEC0E /* SettingsView.swift */; };
 		AD8B4F9A23643753004AEC0E /* SideMenuContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD8B4F9923643753004AEC0E /* SideMenuContentView.swift */; };
 		AD8B4F9C23643BB5004AEC0E /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD8B4F9B23643BB5004AEC0E /* MainView.swift */; };
+		AD923C9D2370727700312C21 /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD923C9C2370727700312C21 /* TextView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +64,7 @@
 		AD8B4F9723634EFF004AEC0E /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		AD8B4F9923643753004AEC0E /* SideMenuContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuContentView.swift; sourceTree = "<group>"; };
 		AD8B4F9B23643BB5004AEC0E /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		AD923C9C2370727700312C21 /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,6 +165,7 @@
 		AD8B4F9223634D73004AEC0E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				AD923C9B2370721000312C21 /* Utility Views */,
 				AD8B4F6123633358004AEC0E /* SideMenuView.swift */,
 				AD8B4F9323634E64004AEC0E /* DashboardView.swift */,
 				AD8B4F9523634EE6004AEC0E /* TaskView.swift */,
@@ -171,6 +174,14 @@
 				AD8B4F9B23643BB5004AEC0E /* MainView.swift */,
 			);
 			name = Views;
+			sourceTree = "<group>";
+		};
+		AD923C9B2370721000312C21 /* Utility Views */ = {
+			isa = PBXGroup;
+			children = (
+				AD923C9C2370727700312C21 /* TextView.swift */,
+			);
+			path = "Utility Views";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -305,6 +316,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AD8B4F9123634CD1004AEC0E /* TodoList.swift in Sources */,
+				AD923C9D2370727700312C21 /* TextView.swift in Sources */,
 				AD8B4F9823634EFF004AEC0E /* SettingsView.swift in Sources */,
 				AD8B4F9623634EE6004AEC0E /* TaskView.swift in Sources */,
 				AD8B4F9C23643BB5004AEC0E /* MainView.swift in Sources */,
