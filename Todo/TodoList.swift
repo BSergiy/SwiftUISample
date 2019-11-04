@@ -50,7 +50,7 @@ class TodoList: ObservableObject{
         do{
             let encoder = JSONEncoder()
             let data = try encoder.encode(tasks)
-            print(fm.createFile(atPath: todoFile.path, contents: data))
+            fm.createFile(atPath: todoFile.path, contents: data)
         }
         catch{
             print(error)
@@ -75,7 +75,7 @@ class TodoList: ObservableObject{
             if (!fm.fileExists(atPath: file.path)){
                 let encoder = JSONEncoder()
                 let data = try encoder.encode([Task]())
-                print(fm.createFile(atPath: file.path, contents: data))
+                fm.createFile(atPath: file.path, contents: data)
             }
             
             return file
