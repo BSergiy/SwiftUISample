@@ -20,26 +20,61 @@ struct TaskView: View {
                 Text("Название:")
                 TextField("", text: $task.name)
             }.padding()
-            
+
             HStack{
                 Text("Описание:")
                 TextField("", text: $task.description)
             }.padding()
 
-            if self.id != nil {
-                Button(action: editTask){
-                    Text("Редактировать")
+            VStack(alignment: .leading){
+                Text("Приоритет:")
+                Picker(
+                    selection: $task.priority,
+                    label: Text("Приоритет:")
+                ){
+                    ForEach(Priority.allCases, id: \.self) {
+                        self.makePriorityImage($0)
+                            .tag($0)
+                    }
                 }
-            }
-            else{
-                Button(action: createNewTask){
-                    Text("Создать")
-                }
-            }
+                    .pickerStyle(SegmentedPickerStyle())
+            }.padding()
+
+            Divider()
+            
+            makeDoneButton().padding()
             
             Spacer()
         }
             .padding()
+    }
+    
+    func makePriorityImage(_ priority: Priority) -> Image {
+        let rawImage = UIImage(systemName: "flame")!
+        let coloredImage: UIImage;
+        
+        switch priority {
+        case .low:
+            coloredImage = rawImage.withTintColor(.gray, renderingMode: .alwaysOriginal)
+        case .normal:
+            coloredImage = rawImage.withTintColor(.systemYellow, renderingMode: .alwaysOriginal)
+        case .high:
+            coloredImage = rawImage.withTintColor(.red, renderingMode: .alwaysOriginal)
+        }
+        
+        return Image(uiImage: coloredImage)
+    }
+    
+    func makeDoneButton() -> some View {
+        if id != nil {
+            return Button(action: editTask){
+                Text("Редактировать")
+            }
+        }
+        
+        return Button(action: createNewTask){
+            Text("Создать")
+        }
     }
     
     func editTask(){

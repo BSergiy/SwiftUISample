@@ -24,7 +24,9 @@ struct DashboardView: View {
 
                 HStack{
                     Spacer()
-                    NavigationLink(destination: makeTaskView(Task())){
+                    NavigationLink(
+                        destination: makeTaskView(Task())
+                    ){
                         Image(systemName: "plus.circle.fill")
                             .imageScale(.large)
                     }
@@ -51,15 +53,36 @@ struct DashboardView: View {
 
     private func makeTaskRow(_ task: Task) -> some View{
         NavigationLink(destination: makeTaskView(task, withId: true)){
-            VStack(alignment: .leading){
-                Text(task.name)
-                    .font(.title)
-                if (!task.description.isEmpty){
-                    Text(task.description)
-                        .font(.body)
-                        .foregroundColor(.gray)
+            HStack{
+                makePriorityTagView(task.priority)
+                
+                VStack(alignment: .leading){
+                    Text(task.name)
+                        .font(.title)
+                    if (!task.description.isEmpty){
+                        Text(task.description)
+                            .font(.body)
+                            .foregroundColor(.gray)
+                    }
                 }
             }
+        }
+    }
+    
+    private func drawCircle() -> some View{
+        Circle()
+            .frame(width: 20, height: 20)
+            .fixedSize()
+    }
+    
+    private func makePriorityTagView(_ priprity: Priority) -> some View{
+        switch priprity {
+        case .low:
+            return drawCircle().foregroundColor(.gray)
+        case .normal:
+            return drawCircle().foregroundColor(.yellow)
+        case .high:
+            return drawCircle().foregroundColor(.red)
         }
     }
 }
