@@ -47,6 +47,8 @@ struct DashboardView: View {
                 
                 if (showSettings){
                     dashboardSettings
+                        .animation(.default)
+                        .transition(.move(edge: .leading))
                 }
 
                 Divider()
