@@ -43,19 +43,19 @@ struct TaskView: View {
     }
     
     func editTask(){
-        guard let index = self.todoList.list.firstIndex(where: { $0.id == self.id }) else{
+        guard let index = todoList.list.firstIndex(where: { $0.id == id }) else{
             return
         }
         
-        self.todoList.list[index] = self.task
-        self.todoList.saveToUserFolder()
-        self.presentationMode.wrappedValue.dismiss()
+        todoList.list[index] = task
+        todoList.saveToUserFolder()
+        presentationMode.wrappedValue.dismiss()
     }
     
     func createNewTask(){
-        self.todoList.list.append(self.task)
-        self.todoList.saveToUserFolder()
-        self.presentationMode.wrappedValue.dismiss()
+        todoList.list.append(task)
+        todoList.saveToUserFolder()
+        presentationMode.wrappedValue.dismiss()
     }
 }
 

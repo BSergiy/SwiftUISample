@@ -15,37 +15,52 @@ struct DashboardView: View {
         NavigationView{
             VStack{
                 List{
-                    ForEach(todoList.list, id: \.id){ task in
-                        NavigationLink(destination: TaskView(task: task, id: task.id).environmentObject(self.todoList)){
-                            VStack(alignment: .leading){
-                                Text(task.name)
-                                    .font(.title)
-                                if (!task.description.isEmpty){
-                                    Text(task.description)
-                                        .font(.body)
-                                        .foregroundColor(.gray)
-                                }
-                            }
-                        }
+                    ForEach(todoList.list){ task in
+                        self.makeTaskRow(task)
                     }
                         .onDelete(perform: deleteItems)
                         .frame(minHeight: 70)
                 }
-                .navigationBarTitle("Список задач", displayMode: .inline)
+
                 HStack{
                     Spacer()
-                    NavigationLink(destination: TaskView(task: Task()).environmentObject(todoList)){
+                    NavigationLink(destination: makeTaskView(Task())){
                         Image(systemName: "plus.circle.fill")
                             .imageScale(.large)
                     }
                 }.padding()
-            }
+            }.navigationBarTitle("Список задач",
+                                 displayMode: .inline)
         }.navigationBarItems(trailing: EditButton())
     }
     
-    func deleteItems(at offsets: IndexSet) {
+    private func deleteItems(at offsets: IndexSet) {
         todoList.list.remove(atOffsets: offsets)
         todoList.saveToUserFolder()
+    }
+    
+    private func makeTaskView(_ task: Task, withId: Bool = false) -> some View{
+        if withId {
+            return TaskView(task: task, id: task.id).environmentObject(self.todoList)
+        }
+        else
+        {
+            return TaskView(task: task).environmentObject(self.todoList)
+        }
+    }
+
+    private func makeTaskRow(_ task: Task) -> some View{
+        NavigationLink(destination: makeTaskView(task, withId: true)){
+            VStack(alignment: .leading){
+                Text(task.name)
+                    .font(.title)
+                if (!task.description.isEmpty){
+                    Text(task.description)
+                        .font(.body)
+                        .foregroundColor(.gray)
+                }
+            }
+        }
     }
 }
 

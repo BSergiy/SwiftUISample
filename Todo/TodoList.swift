@@ -12,7 +12,7 @@ class TodoList: ObservableObject{
     @Published var list = [Task]()
     
     init(){
-        list = loadTasks()
+        load()
     }
     
     init(from list: [Task]){
